@@ -1,0 +1,26 @@
+# docker-compose.yml
+services:
+  motion:
+    container_name: guardian-motion
+    build:
+      context: motion
+    networks:
+      - guardian
+    env_file: motion/.env
+    expose:
+      - "80"
+    restart: unless-stopped
+  web:
+    container_name: guardian-web
+    build:
+      context: web
+    env_file: web/.env
+    networks:
+      - guardian
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+networks:
+  guardian:
+    name: guardian
