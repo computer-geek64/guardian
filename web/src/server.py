@@ -21,7 +21,7 @@ def get_home():
 # Stream
 @app.route('/stream', methods=['GET'])
 def get_stream():
-    return render_template('cameras.html', title='Guardian'), 200
+    return render_template('cameras.html', title='Guardian', motion_username=os.environ['MOTION_USERNAME'], motion_password=os.environ['MOTION_PASSWORD']), 200
 
 
 if __name__ == '__main__':
