@@ -6,15 +6,15 @@ services:
       context: motion
     networks:
       - guardian
-    env_file: motion/.env
-    expose:
-      - "80"
+    env_file: .env
+    ports:
+      - "81:80"
     restart: unless-stopped
   web:
     container_name: guardian-web
     build:
       context: web
-    env_file: web/.env
+    env_file: .env
     networks:
       - guardian
     ports:
@@ -24,3 +24,7 @@ services:
 networks:
   guardian:
     name: guardian
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
+        - gateway: 172.18.0.1
