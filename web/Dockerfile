@@ -3,7 +3,7 @@ FROM python:3.10
 
 WORKDIR /code
 RUN apt-get update
-RUN apt-get install -y uuid-runtime
+RUN apt-get install -y uuid-runtime ffmpeg
 
 RUN pip install --upgrade pip
 
