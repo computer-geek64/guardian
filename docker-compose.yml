@@ -7,8 +7,6 @@ services:
     networks:
       - guardian
     env_file: .env
-    ports:
-      - "81:80"
     restart: unless-stopped
   web:
     container_name: guardian-web

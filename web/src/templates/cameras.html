@@ -1,5 +1,26 @@
 {% extends "layout.html" %}
+{% block style %}
+    div.grid-container {
+        display: grid;
+    }
+
+    .grid-item {
+    }
+{% endblock %}
 {% block body %}
-    <!--<img src="http://{{ motion_username }}:{{ motion_password }}@homebase:81/1">-->
-    <img src="/image">
+    <h1>{{ title }}</h1>
+    <div class="grid-container">
+        <div class="grid-item">
+            <h3 style="text-align: center;">Backyard Camera</h3>
+            <img src="/stream">
+        </div>
+        <div class="grid-item">
+            <h3 style="text-align: center;">Front Door Camera</h3>
+            <img src="/stream">
+        </div>
+        <div class="grid-item">
+            <h3 style="text-align: center;">Garage Camera</h3>
+            <img src="/stream">
+        </div>
+    </div>
 {% endblock %}
