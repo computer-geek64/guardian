@@ -3,7 +3,7 @@ FROM ubuntu:latest
 
 WORKDIR /code
 RUN apt-get update
-RUN apt-get install -y motion curl vim
+RUN apt-get install -y motion curl
 
 COPY src .
 RUN cp motion.conf /etc/motion/motion.conf
