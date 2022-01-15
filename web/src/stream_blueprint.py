@@ -34,7 +34,7 @@ def generate_wav(ffmpeg_process):
             data = ffmpeg_process.stdout.read(1024)
             while True:
                 yield data
-                data = ffmpeg_process.stdout.read(1024).read(1024)
+                data = ffmpeg_process.stdout.read(1024)
         finally:
             ffmpeg_process.terminate()
             print('Terminated')
@@ -49,7 +49,7 @@ def generate_frames(stream, resolution):
                 if resolution == 'sd':
                     frame = cv2.resize(frame, (480, 270))
                 elif sum(n.isdecimal() for n in resolution.split('x', 1)) == 2:  # Valid resolution string (e.g., 1920x1080)
-                    frame = cv2.resize(frame, tuple(resolution.split('x', 1)))
+                    frame = cv2.resize(frame, tuple(map(int, resolution.split('x', 1))))
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
                 yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
