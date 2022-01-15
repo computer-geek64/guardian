@@ -8,7 +8,7 @@ from flask import Blueprint, Response, stream_with_context, render_template
 
 stream_blueprint = Blueprint('stream_blueprint', __name__, template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
 
-rtsp_urls = {'backyard': 'rtsp://{username}:{password}@192.168.0.103:8080/live/ch0'}
+rtsp_urls = {'backyard': 'rtsp://{username}:{password}@192.168.0.104:8080/live/ch0'}
 
 
 @stream_blueprint.route('/stream/<string:camera>/', methods=['GET'])
@@ -24,8 +24,8 @@ def get_camera_stream_jpeg(camera, resolution):
 
 @stream_blueprint.route('/stream/<string:camera>/audio.mp3', methods=['GET'])
 def get_camera_stream_audio(camera):
-    ffmpeg_process = Popen(['ffmpeg', '-rtsp_transport', 'tcp', '-i', rtsp_urls[camera], '-map', 'a', '-f', 'wav' '-'], stdout=PIPE, stderr=DEVNULL)
-    return Response(stream_with_context(generate_wav(ffmpeg_process)), mimetype='audio/x-wav')
+    ffmpeg_process = Popen(['ffmpeg', '-rtsp_transport', 'tcp', '-i', rtsp_urls[camera], '-map', 'a', '-f', 'mpeg' '-'], stdout=PIPE, stderr=DEVNULL)
+    return Response(stream_with_context(generate_wav(ffmpeg_process)), mimetype='audio/mpeg')
 
 
 def generate_wav(ffmpeg_process):
