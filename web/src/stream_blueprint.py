@@ -29,16 +29,14 @@ def get_camera_stream_audio(camera):
 
 
 def generate_wav(ffmpeg_process):
-    def generate():
-        try:
+    try:
+        data = ffmpeg_process.stdout.read(1024)
+        while True:
+            yield data
             data = ffmpeg_process.stdout.read(1024)
-            while True:
-                yield data
-                data = ffmpeg_process.stdout.read(1024)
-        finally:
-            ffmpeg_process.terminate()
-            print('Terminated')
-    return Response(generate(), mimetype="audio/x-wav")
+    finally:
+        ffmpeg_process.terminate()
+        print('Terminated')
 
 
 def generate_frames(stream, resolution):
