@@ -13,7 +13,7 @@ rtsp_urls = json.loads(os.environ['RTSP_URLS'])
 
 @audio_stream_blueprint.route('/stream/<string:camera>/audio.wav', methods=['GET'])
 def get_camera_stream_audio(camera):
-    ffmpeg_process = Popen(['ffmpeg', '-rtsp_transport', 'tcp', '-i', rtsp_urls[camera], '-vn', '-f', 'wav' 'pipe:stdout'], stdout=PIPE, stderr=DEVNULL)
+    ffmpeg_process = Popen(['ffmpeg', '-rtsp_transport', 'tcp', '-i', rtsp_urls[camera], '-vn', '-f', 'wav', 'pipe:stdout'], stdout=PIPE, stderr=DEVNULL)
     return Response(stream_with_context(generate_wav(ffmpeg_process)), mimetype='audio/wav')
 
 
