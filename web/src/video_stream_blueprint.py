@@ -13,7 +13,7 @@ rtsp_urls = json.loads(os.environ['RTSP_URLS'])
 
 @video_stream_blueprint.route('/stream/<string:camera>/<string:resolution>.jpg', methods=['GET'])
 def get_camera_stream_jpeg(camera, resolution):
-    stream = cv2.VideoCapture(rtsp_urls[camera].format(username=os.environ['USERNAME'], password=os.environ['PASSWORD']))
+    stream = cv2.VideoCapture(rtsp_urls[camera])
     return Response(stream_with_context(generate_frames(stream, resolution.lower())), mimetype='multipart/x-mixed-replace; boundary=frame'), 200
 
 
