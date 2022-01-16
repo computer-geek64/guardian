@@ -1,4 +1,4 @@
-#!/usr/local/bin/python -B
+#!/usr/bin/python3.8 -B
 # populate_configs.py
 
 import os
