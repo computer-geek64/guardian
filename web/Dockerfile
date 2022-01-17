@@ -5,10 +5,10 @@ WORKDIR /code
 RUN apt-get update
 RUN apt-get install -y uuid-runtime ffmpeg
 
-RUN pip install --upgrade pip
+RUN python -m pip install --upgrade pip
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN python -m pip install -r requirements.txt
 
 COPY src .
 
