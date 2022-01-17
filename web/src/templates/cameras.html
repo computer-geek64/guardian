@@ -6,10 +6,25 @@
 
     div.grid-container {
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: max-content max-content max-content;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .grid-item {
+        border-top: 1px solid black;
+        border-left: 1px solid black;
+        padding: 5px;
+        padding-bottom: 0;
+    }
+
+    .grid-item:nth-child(3n), .grid-item:last-child {
+        border-right: 1px solid black;
+    }
+
+    .grid-item:nth-last-child(-n + 3) {
+        border-bottom: 1px solid black;
     }
 {% endblock %}
 {% block body %}
@@ -17,8 +32,10 @@
     <div class="grid-container">
         {% for camera in cameras %}
             <div class="grid-item">
-                <h3 style="text-align: center;">{{ cameras[camera] }} Camera</h3>
-                <img src="/stream/{{ camera }}/sd.jpg">
+                <h3 class="title">{{ cameras[camera] }} Camera</h3>
+                <a href="{{ camera }}/">
+                    <img src="/stream/{{ camera }}/sd.jpg">
+                </a>
             </div>
         {% endfor %}
     </div>

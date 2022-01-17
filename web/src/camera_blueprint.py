@@ -12,10 +12,15 @@ rtsp_urls = json.loads(os.environ['RTSP_URLS'])
 
 @camera_blueprint.route('/stream/<string:camera>/', methods=['GET'])
 def get_camera_stream(camera):
-    return render_template('camera.html', title=camera.capitalize(), camera=camera), 200
+    camera_name = get_camera_name(camera)
+    return render_template('camera.html', title=camera_name, camera=camera, camera_name=camera_name), 200
 
 
 @camera_blueprint.route('/stream/', methods=['GET'])
 def get_camera_streams():
-    cameras = {camera_name: ' '.join(word.capitalize() for word in camera_name.split('_')) for camera_name in rtsp_urls}
+    cameras = {camera: get_camera_name(camera) for camera in rtsp_urls}
     return render_template('cameras.html', title='Guardian', cameras=cameras), 200
+
+
+def get_camera_name(camera):
+    return ' '.join(word.capitalize() for word in camera.split('_'))
