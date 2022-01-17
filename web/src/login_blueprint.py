@@ -35,6 +35,8 @@ def post_login():
     session['username'] = username
     session['password'] = password
     session.pop('login_attempts')
+    if 'redirect' in request.args:
+        return redirect(request.args.get('redirect')), 302
     return redirect('/stream/'), 302
 
 

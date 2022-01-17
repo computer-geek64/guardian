@@ -10,7 +10,7 @@ if __name__ == '__main__':
     rtsp_urls = json.loads(os.environ['RTSP_URLS'])
 
     for camera in rtsp_urls:
-        filename = '/etc/motion/conf.d/{name}_camera.conf'.format(name=camera.lower().replace(' ', '_'))
+        filename = '/etc/motion/conf.d/{name}_camera.conf'.format(name=camera)
         if os.path.exists(filename):
             if '@' in rtsp_urls[camera]:
                 username, password = rtsp_urls[camera].split('rtsp://', 1)[1].split('@', 1)[0].split(':', 1)
