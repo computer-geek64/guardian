@@ -22,14 +22,24 @@
     .grid-item:nth-child(-n+3) {
         border-top: 1px solid black;
     }
+
+    .camera-name {
+        margin: 10px 0;
+    }
+
+    time {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 {% endblock %}
 {% block body %}
+    <time>Javascript is disabled!</time>
     <h1 class="title">{{ title }}</h1>
-    <time>10:00</time>
     <div class="grid-container">
         {% for camera in cameras %}
             <div class="grid-item">
-                <h3 class="title">{{ cameras[camera] }} Camera</h3>
+                <h3 class="title camera-name">{{ cameras[camera] }} Camera</h3>
                 <a href="{{ camera }}/">
                     <img src="/stream/{{ camera }}/sd.jpg">
                 </a>
@@ -38,6 +48,7 @@
     </div>
     <script>
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let timeElement = document.querySelector("time");
 
         function updateTimestamp() {
             let date = new Date();
@@ -47,7 +58,7 @@
             else if (date.getDate() % 10 === 2) ordinalIndicator = "nd";
             else if (date.getDate() % 10 === 3) ordinalIndicator = "rd";
             else ordinalIndicator = "th";
-            document.querySelector("time").innerText = months[date.getMonth()] + " " + date.getDate() + ordinalIndicator + " " + date.getFullYear() + " " + ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2) + ":" + ("0" + date.getSeconds()).substr(-2);
+            timeElement.innerText = months[date.getMonth()] + " " + date.getDate() + ordinalIndicator + ", " + date.getFullYear() + " " + ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2) + ":" + ("0" + date.getSeconds()).substr(-2);
         }
 
         setInterval(updateTimestamp, 100);
