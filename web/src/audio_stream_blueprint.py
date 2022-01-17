@@ -2,6 +2,7 @@
 
 import os
 import json
+from auth import auth
 from subprocess import Popen, PIPE, DEVNULL
 from flask import Blueprint, Response, stream_with_context
 
