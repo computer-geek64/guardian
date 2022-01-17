@@ -17,4 +17,4 @@ def get_camera_stream(camera):
 
 @camera_blueprint.route('/stream/', methods=['GET'])
 def get_camera_streams():
-    return render_template('cameras.html', title='Guardian'), 200
+    return render_template('cameras.html', title='Guardian', camera_names=rtsp_urls.keys()), 200

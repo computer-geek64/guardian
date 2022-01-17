@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block style %}
+    .title {
+        text-align: center;
+    }
+
     div.grid-container {
         display: grid;
         grid-template-columns: auto auto auto;
@@ -9,19 +13,13 @@
     }
 {% endblock %}
 {% block body %}
-    <h1>{{ title }}</h1>
+    <h1 class="title">{{ title }}</h1>
     <div class="grid-container">
-        <div class="grid-item">
-            <h3 style="text-align: center;">Backyard Camera</h3>
-            <img src="/stream/backyard/sd.jpg">
-        </div>
-        <div class="grid-item">
-            <h3 style="text-align: center;">Front Door Camera</h3>
-            <img src="/stream/backyard/sd.jpg">
-        </div>
-        <div class="grid-item">
-            <h3 style="text-align: center;">Garage Camera</h3>
-            <img src="/stream/backyard/sd.jpg">
-        </div>
+        {% for camera_name in camera_names %}
+            <div class="grid-item">
+                <h3 style="text-align: center;">{{ ' '.join(word.capitalize() for word in camera_name.split('_')) }} Camera</h3>
+                <img src="/stream/{{ camera_name }}/sd.jpg">
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
