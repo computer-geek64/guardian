@@ -1,9 +1,5 @@
 {% extends "layout.html" %}
 {% block style %}
-    .title {
-        text-align: center;
-    }
-
     div.grid-container {
         display: grid;
         grid-template-columns: max-content max-content max-content;
@@ -13,22 +9,23 @@
     }
 
     .grid-item {
-        border-top: 1px solid black;
-        border-left: 1px solid black;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
         padding: 5px;
         padding-bottom: 0;
     }
 
-    .grid-item:nth-child(3n), .grid-item:last-child {
-        border-right: 1px solid black;
+    .grid-item:nth-child(3n+1), .grid-item:first-child {
+        border-left: 1px solid black;
     }
 
-    .grid-item:nth-last-child(-n + 3) {
-        border-bottom: 1px solid black;
+    .grid-item:nth-child(-n+3) {
+        border-top: 1px solid black;
     }
 {% endblock %}
 {% block body %}
     <h1 class="title">{{ title }}</h1>
+    <time>10:00</time>
     <div class="grid-container">
         {% for camera in cameras %}
             <div class="grid-item">
@@ -39,4 +36,20 @@
             </div>
         {% endfor %}
     </div>
+    <script>
+        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        function updateTimestamp() {
+            let date = new Date();
+            let ordinalIndicator;
+            if (date.getDate() > 10 && date.getDate() < 20) ordinalIndicator = "th";
+            else if (date.getDate() % 10 === 1) ordinalIndicator = "st";
+            else if (date.getDate() % 10 === 2) ordinalIndicator = "nd";
+            else if (date.getDate() % 10 === 3) ordinalIndicator = "rd";
+            else ordinalIndicator = "th";
+            document.querySelector("time").innerText = months[date.getMonth()] + " " + date.getDate() + ordinalIndicator + " " + date.getFullYear() + " " + ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2) + ":" + ("0" + date.getSeconds()).substr(-2);
+        }
+
+        setInterval(updateTimestamp, 100);
+    </script>
 {% endblock %}
