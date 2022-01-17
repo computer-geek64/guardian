@@ -3,6 +3,7 @@
 import os
 import cv2
 import json
+from auth import auth
 from flask import Blueprint, Response, stream_with_context
 
 
@@ -12,11 +13,13 @@ rtsp_urls = json.loads(os.environ['RTSP_URLS'])
 
 
 @video_stream_blueprint.route('/stream/<string:camera>/<string:resolution>.jpg', methods=['GET'])
+@auth
 def get_camera_stream_jpeg(camera, resolution):
     stream = cv2.VideoCapture(rtsp_urls[camera])
     return Response(stream_with_context(generate_frames(stream, resolution.lower())), mimetype='multipart/x-mixed-replace; boundary=frame'), 200
 
 
+@auth
 def generate_frames(stream, resolution):
     try:
         while True:
