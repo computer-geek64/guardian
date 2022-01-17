@@ -13,7 +13,7 @@ def get_login():
     if 'login_attempts' in session and session.get('login_attempts') > 2:
         return 'HTTP 403', 403
     if 'username' in session and 'password' in session and authenticate(session.get('username'), session.get('password')):
-        return redirect('/streams/'), 302
+        return redirect('/stream/'), 302
     return render_template('login.html'), 200
 
 
@@ -22,8 +22,7 @@ def post_login():
     if 'login_attempts' in session:
         if session.get('login_attempts') > 2:
             return 'HTTP 403', 403
-        session['login_attempts'] = session.get('login_attempts') + 1
-        #session['login_attempts'] += 1
+        session['login_attempts'] += 1
     else:
         session['login_attempts'] = 1
 
@@ -36,7 +35,7 @@ def post_login():
     session['username'] = username
     session['password'] = password
     session.pop('login_attempts')
-    return redirect('/streams/'), 302
+    return redirect('/stream/'), 302
 
 
 @login_blueprint.route('/logout/', methods=['GET'])
