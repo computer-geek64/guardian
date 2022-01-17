@@ -15,10 +15,10 @@
 {% block body %}
     <h1 class="title">{{ title }}</h1>
     <div class="grid-container">
-        {% for camera_name in camera_names %}
+        {% for camera in cameras %}
             <div class="grid-item">
-                <h3 style="text-align: center;">{{ ' '.join(word.capitalize() for word in camera_name.split('_')) }} Camera</h3>
-                <img src="/stream/{{ camera_name }}/sd.jpg">
+                <h3 style="text-align: center;">{{ cameras[camera] }} Camera</h3>
+                <img src="/stream/{{ camera }}/sd.jpg">
             </div>
         {% endfor %}
     </div>
