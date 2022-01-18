@@ -14,8 +14,8 @@ def auth(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if 'username' not in session or 'password' not in session:
-            #return 'HTTP 403', 403
-            return redirect(url_for('get_login', redirect=request.path))
+            # return 'HTTP 403', 403
+            return redirect(url_for('login_blueprint.get_login', redirect=request.path))
         if authenticate(session.get('username'), session.get('password')):
             return func(*args, **kwargs)
         return 'HTTP 401', 401
