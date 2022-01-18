@@ -26,6 +26,19 @@ services:
       - type: bind
         source: /data/guardian/web
         target: /data
+  rtsp:
+    container_name: guardian-rtsp
+    image: aler9/rtsp-simple-server
+    env_file: .env
+    environment:
+      RTSP_RTSPADDRESS: "0.0.0.0:554"
+      RTSP_RTMPDISABLE: "yes"
+      RTSP_HLSDISABLE: "yes"
+    networks:
+      - guardian
+    ports:
+      - "554:554"
+    restart: unless-stopped
 
 networks:
   guardian:
