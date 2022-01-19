@@ -27,16 +27,16 @@ def generate_frames(stream, resolution):
                 if resolution == 'sd':
                     if frame.shape[0] > 640:
                         if frame.shape[0] / 4 == frame.shape[1] / 3:
-                            frame.resize(frame, (640, 480))
+                            frame = cv2.resize(frame, (640, 480))
                         else:
-                            frame.resize(frame, (640, 360))
+                            frame = cv2.resize(frame, (640, 360))
                 elif sum(n.isdecimal() for n in resolution.split('x', 1)) == 2:  # Valid resolution string (e.g., 1366x768)
                     frame = cv2.resize(frame, tuple(map(int, resolution.split('x', 1))))
                 elif resolution == 'hd':
                     if frame.shape[0] / 4 == frame.shape[1] / 3:
-                        frame.resize(frame, (1280, 960))
+                        frame = cv2.resize(frame, (1280, 960))
                     else:
-                        frame.resize(frame, (1280, 720))
+                        frame = cv2.resize(frame, (1280, 720))
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
                 yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
