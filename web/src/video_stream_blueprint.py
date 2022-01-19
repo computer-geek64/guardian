@@ -12,36 +12,43 @@ video_stream_blueprint = Blueprint('video_stream_blueprint', __name__, template_
 rtsp_urls = json.loads(os.environ['RTSP_URLS'])
 
 
+class RTSPVideoStream(object):
+    def __init__(self, rtsp_url):
+        self.stream = cv2.VideoCapture(rtsp_url)
+
+    def __del__(self):
+        self.stream.release()
+        print('Successfully exited video stream')
+
+
 @video_stream_blueprint.route('/stream/<string:camera>/<string:resolution>.jpg', methods=['GET'])
 @auth
 def get_camera_stream_jpeg(camera, resolution):
-    stream = cv2.VideoCapture(rtsp_urls[camera])
-    return Response(stream_with_context(generate_frames(stream, resolution.lower())), mimetype='multipart/x-mixed-replace; boundary=frame'), 200
+    rtsp_video_stream = RTSPVideoStream(rtsp_urls[camera])
+    return Response(stream_with_context(generate_frames(rtsp_video_stream, resolution.lower())), mimetype='multipart/x-mixed-replace; boundary=frame'), 200
 
 
-def generate_frames(stream, resolution):
-    try:
-        while True:
-            success, frame = stream.read()
-            if success:
-                if resolution == 'sd':
-                    if frame.shape[0] > 640:
-                        if frame.shape[0] / 4 == frame.shape[1] / 3:
-                            frame = cv2.resize(frame, (640, 480))
-                        else:
-                            frame = cv2.resize(frame, (640, 360))
-                elif sum(n.isdecimal() for n in resolution.split('x', 1)) == 2:  # Valid resolution string (e.g., 1366x768)
-                    frame = cv2.resize(frame, tuple(map(int, resolution.split('x', 1))))
-                elif resolution == 'hd':
+def generate_frames(rtsp_video_stream, resolution):
+    while True:
+        success, frame = rtsp_video_stream.stream.read()
+        if success:
+            if resolution == 'sd':
+                if frame.shape[0] > 640:
+                    print(frame.shape)
+                    print(frame.shape[0] / 4 == frame.shape[1] / 3)
                     if frame.shape[0] / 4 == frame.shape[1] / 3:
-                        frame = cv2.resize(frame, (1280, 960))
+                        frame = cv2.resize(frame, (640, 480))
                     else:
-                        frame = cv2.resize(frame, (1280, 720))
-                ret, buffer = cv2.imencode('.jpg', frame)
-                frame = buffer.tobytes()
-                yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
-            else:
-                break
-    finally:
-        stream.release()
-        print('Done')
+                        frame = cv2.resize(frame, (640, 360))
+            elif sum(n.isdecimal() for n in resolution.split('x', 1)) == 2:  # Valid resolution string (e.g., 1366x768)
+                frame = cv2.resize(frame, tuple(map(int, resolution.split('x', 1))))
+            elif resolution == 'hd':
+                if frame.shape[0] / 4 == frame.shape[1] / 3:
+                    frame = cv2.resize(frame, (1280, 960))
+                else:
+                    frame = cv2.resize(frame, (1280, 720))
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
+        else:
+            break
