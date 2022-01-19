@@ -18,7 +18,6 @@ class RTSPVideoStream(object):
 
     def __del__(self):
         self.stream.release()
-        print('Successfully exited video stream')
 
 
 @video_stream_blueprint.route('/stream/<string:camera>/<string:resolution>.jpg', methods=['GET'])
@@ -33,17 +32,14 @@ def generate_frames(rtsp_video_stream, resolution):
         success, frame = rtsp_video_stream.stream.read()
         if success:
             if resolution == 'sd':
-                if frame.shape[0] > 640:
-                    print(frame.shape)
-                    print(frame.shape[0] / 4 == frame.shape[1] / 3)
-                    if frame.shape[0] / 4 == frame.shape[1] / 3:
-                        frame = cv2.resize(frame, (640, 480))
-                    else:
-                        frame = cv2.resize(frame, (640, 360))
+                if frame.shape[1] / 4 == frame.shape[0] / 3:
+                    frame = cv2.resize(frame, (640, 480))
+                else:
+                    frame = cv2.resize(frame, (640, 360))
             elif sum(n.isdecimal() for n in resolution.split('x', 1)) == 2:  # Valid resolution string (e.g., 1366x768)
                 frame = cv2.resize(frame, tuple(map(int, resolution.split('x', 1))))
             elif resolution == 'hd':
-                if frame.shape[0] / 4 == frame.shape[1] / 3:
+                if frame.shape[1] / 4 == frame.shape[0] / 3:
                     frame = cv2.resize(frame, (1280, 960))
                 else:
                     frame = cv2.resize(frame, (1280, 720))

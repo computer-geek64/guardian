@@ -18,7 +18,6 @@ class RTSPAudioStream(object):
 
     def __del__(self):
         self.process.terminate()
-        print('Successfully exited audio stream')
 
 
 @audio_stream_blueprint.route('/stream/<string:camera>/audio.wav', methods=['GET'])
