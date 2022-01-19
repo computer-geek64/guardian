@@ -19,16 +19,28 @@ def get_camera_stream_jpeg(camera, resolution):
     return Response(stream_with_context(generate_frames(stream, resolution.lower())), mimetype='multipart/x-mixed-replace; boundary=frame'), 200
 
 
-@auth
 def generate_frames(stream, resolution):
     try:
         while True:
             success, frame = stream.read()
             if success:
                 if resolution == 'sd':
-                    frame = cv2.resize(frame, (480, 270))
+                    if frame.shape[0] > 640:
+                        if frame.shape[0] / 4 == frame.shape[1] / 3:
+                            frame.resize(frame, (640, 480))
+                        elif frame.shape[0] / 16 == frame.shape[1] / 9:
+                            frame.resize(frame, (640, 360))
+                        else:
+                            frame = cv2.resize(frame, (480, 270))
                 elif sum(n.isdecimal() for n in resolution.split('x', 1)) == 2:  # Valid resolution string (e.g., 1366x768)
                     frame = cv2.resize(frame, tuple(map(int, resolution.split('x', 1))))
+                elif resolution == 'hd':
+                    if frame.shape[0] / 4 == frame.shape[1] / 3:
+                        frame.resize(frame, (1280, 960))
+                    elif frame.shape[0] / 16 == frame.shape[1] / 9:
+                        frame.resize(frame, (1280, 720))
+                    else:
+                        frame = cv2.resize(frame, (1366, 768))
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
                 yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n'
