@@ -1,0 +1,45 @@
+{
+  "listeners": {
+    "*:80": {
+      "pass": "routes"
+    }
+  },
+  "routes": [
+    {
+      "match": {
+        "uri": [
+          "/auth",
+          "/login",
+          "/logout"
+        ]
+      },
+      "action": {
+        "pass": "applications/auth"
+      }
+    },
+    {
+      "action": {
+        "pass": "applications/guardian"
+      }
+    }
+  ],
+  "applications": {
+    "guardian": {
+      "type": "python",
+      "processes": 5,
+      "working_directory": "/code",
+      "path": "/code",
+      "module": "server",
+      "callable": "app",
+      "threads": 5
+    },
+    "auth": {
+      "type": "python",
+      "processes": 1,
+      "working_directory": "/code",
+      "path": "/code",
+      "module": "auth_server",
+      "callable": "app"
+    }
+  }
+}

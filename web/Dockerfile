@@ -1,5 +1,5 @@
 # Dockerfile
-FROM python:3.10
+FROM nginx/unit:1.26.1-python3.10
 
 WORKDIR /code
 RUN apt-get update
@@ -12,4 +12,7 @@ RUN pip install -r requirements.txt
 
 COPY src .
 
-ENTRYPOINT ["./server.py"]
+RUN cp config.json /docker-entrypoint.d/
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]

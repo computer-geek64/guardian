@@ -34,7 +34,7 @@
     }
 {% endblock %}
 {% block body %}
-    <time>Javascript is disabled!</time>
+    <time>JavaScript is disabled!</time>
     <h1 class="title">{{ title }}</h1>
     <div class="grid-container">
         {% for camera in cameras %}
@@ -46,7 +46,7 @@
             </div>
         {% endfor %}
     </div>
-    <script>
+    <script type="text/javascript">
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let timeElement = document.querySelector("time");
 
@@ -61,6 +61,18 @@
             timeElement.innerText = months[date.getMonth()] + " " + date.getDate() + ordinalIndicator + ", " + date.getFullYear() + " " + ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2) + ":" + ("0" + date.getSeconds()).substr(-2);
         }
 
+        let heartbeat = new XMLHttpRequest();
+        heartbeat.onload = function() {
+            console.log(heartbeat.status);
+        };
+
+        function sendHeartbeat() {
+            heartbeat.open('GET', '/stream/heartbeat');
+            heartbeat.send();
+        }
+
         setInterval(updateTimestamp, 100);
+
+        setInterval(sendHeartbeat, 5000);
     </script>
 {% endblock %}

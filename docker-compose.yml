@@ -4,10 +4,10 @@ services:
     container_name: guardian-motion
     build:
       context: motion
+    restart: unless-stopped
+    env_file: .env
     networks:
       - guardian
-    env_file: .env
-    restart: unless-stopped
     volumes:
       - type: bind
         source: /data/guardian/motion
@@ -16,19 +16,28 @@ services:
     container_name: guardian-web
     build:
       context: web
+    restart: unless-stopped
     env_file: .env
+    networks:
+      - guardian
+  nginx:
+    container_name: guardian-nginx
+    build:
+      context: nginx
+    restart: unless-stopped
     networks:
       - guardian
     ports:
       - "80:80"
-    restart: unless-stopped
     volumes:
       - type: bind
-        source: /data/guardian/web
+        #source: /data/guardian/motion
+        source: /home/ashish/Videos
         target: /data
   rtsp:
     container_name: guardian-rtsp
     image: aler9/rtsp-simple-server
+    restart: unless-stopped
     env_file: .env
     environment:
       RTSP_RTSPADDRESS: "0.0.0.0:554"
@@ -38,7 +47,6 @@ services:
       - guardian
     ports:
       - "554:554"
-    restart: unless-stopped
 
 networks:
   guardian:

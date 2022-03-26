@@ -34,6 +34,18 @@
             timeElement.innerText = months[date.getMonth()] + " " + date.getDate() + ordinalIndicator + ", " + date.getFullYear() + " " + ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2) + ":" + ("0" + date.getSeconds()).substr(-2);
         }
 
+        let heartbeat = new XMLHttpRequest();
+        heartbeat.onload = function() {
+            console.log(heartbeat.status);
+        };
+
+        function sendHeartbeat() {
+            heartbeat.open('GET', '/stream/heartbeat');
+            heartbeat.send();
+        }
+
         setInterval(updateTimestamp, 100);
+
+        setInterval(sendHeartbeat, 5000);
     </script>
 {% endblock %}
