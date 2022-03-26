@@ -5,7 +5,7 @@
 ## Description
 
 Guardian is my personal home surveillance system that is currently in deployment to watch over my house.
-It features **motion detection** and recording, as well as **real-time streaming** for multiple users.
+It features **motion detection** and recording with **push notifications**, as well as **real-time streaming** for multiple users.
 Both **audio and video** streaming are supported and synchronized over **native HTTP** (no additional plugins or add-ons necessary; compatible with all devices).
 Furthermore, instant **in-browser event playback** is available for recorded motion events.
 To adhere to strict storage requirements, the software is configured with **LRU eviction** to overwrite the oldest recorded events when storage space becomes an issue.
