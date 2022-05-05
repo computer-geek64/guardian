@@ -45,7 +45,7 @@ def generate_frames(camera, stream, resolution):
         elif current_timestamp - last_heartbeat_timestamp >= 7:
             break
 
-        if i < 2:
+        if i < 5:
             i += 1
             stream.grab()
             continue

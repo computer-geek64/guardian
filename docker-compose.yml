@@ -31,8 +31,7 @@ services:
       - "80:80"
     volumes:
       - type: bind
-        #source: /data/guardian/motion
-        source: /home/ashish/Videos
+        source: /data/guardian/motion
         target: /data
   rtsp:
     container_name: guardian-rtsp
