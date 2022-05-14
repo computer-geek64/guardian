@@ -1,4 +1,4 @@
-#!/usr/bin/python3.8 -B
+#!/usr/bin/python3 -B
 # notify.py
 
 import os

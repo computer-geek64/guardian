@@ -12,6 +12,10 @@ services:
       - type: bind
         source: /data/guardian/motion
         target: /data
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
   web:
     container_name: guardian-web
     build:
@@ -20,6 +24,11 @@ services:
     env_file: .env
     networks:
       - guardian
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
   nginx:
     container_name: guardian-nginx
     build:
@@ -33,6 +42,10 @@ services:
       - type: bind
         source: /data/guardian/motion
         target: /data
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
   rtsp:
     container_name: guardian-rtsp
     image: aler9/rtsp-simple-server
@@ -46,6 +59,11 @@ services:
       - guardian
     ports:
       - "554:554"
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
 
 networks:
   guardian:

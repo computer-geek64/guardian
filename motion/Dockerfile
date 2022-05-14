@@ -4,7 +4,7 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /code
 RUN apt-get update
-RUN apt-get install -y motion curl python3.8 python3-pip
+RUN apt-get install -y motion curl python3 python3-pip
 
 RUN pip install --upgrade pip
 
