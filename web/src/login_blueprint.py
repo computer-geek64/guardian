@@ -13,9 +13,7 @@ def get_login():
     if 'login_attempts' in session and session.get('login_attempts') > 2:
         return 'HTTP 403', 403
     if authenticate(session.get('username'), session.get('password')):
-        # root_url = request.headers.get('X-Forwarded-Proto') + '://' + request.headers.get('X-Forwarded-Host') if 'X-Forwarded-Host' in request.headers and 'X-Forwarded-Proto' in request.headers else ''
-        # return redirect(root_url + request.args.get('redirect', default='/stream/')), 302
-        return redirect(request.args.get('redirect', '/stream/'))
+        return redirect(request.args.get('redirect', '/stream/')), 302
     return render_template('login.html'), 200
 
 
@@ -36,9 +34,7 @@ def post_login():
     session['password'] = password
     session.pop('login_attempts')
 
-    # root_url = request.headers.get('X-Forwarded-Proto') + '://' + request.headers.get('X-Forwarded-Host') if 'X-Forwarded-Host' in request.headers and 'X-Forwarded-Proto' in request.headers else ''
-    # return redirect(root_url + request.args.get('redirect', default='/stream/')), 302
-    return redirect(request.args.get('redirect', '/stream/'))
+    return redirect(request.args.get('redirect', '/stream/')), 302
 
 
 @login_blueprint.route('/logout', methods=['GET'])
