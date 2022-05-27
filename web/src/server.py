@@ -1,4 +1,4 @@
-#!/usr/local/bin/python -B
+#!/usr/local/bin/python
 # server.py
 
 import os

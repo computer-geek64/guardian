@@ -1,5 +1,6 @@
-Flask==2.0.2
-#Flask-SocketIO==5.1.1
-#eventlet==0.33.0
-requests==2.27.1
-opencv-python==4.5.5.62
+Flask>=2.0.2
+#Flask-SocketIO>=5.1.1
+#eventlet>=0.33.0
+requests>=2.27.1
+opencv-python>=4.5.5.64
+redis>=4.3.1

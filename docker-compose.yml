@@ -1,4 +1,5 @@
 # docker-compose.yml
+
 services:
   motion:
     container_name: guardian-motion
@@ -6,8 +7,6 @@ services:
       context: motion
     restart: unless-stopped
     env_file: .env
-    networks:
-      - guardian
     volumes:
       - type: bind
         source: /data/guardian/motion
@@ -16,28 +15,26 @@ services:
         source: /etc/localtime
         target: /etc/localtime
         read_only: true
+    networks:
+      - guardian
   web:
     container_name: guardian-web
     build:
       context: web
     restart: unless-stopped
     env_file: .env
-    networks:
-      - guardian
     volumes:
       - type: bind
         source: /etc/localtime
         target: /etc/localtime
         read_only: true
+    networks:
+      - guardian
   nginx:
     container_name: guardian-nginx
     build:
       context: nginx
     restart: unless-stopped
-    networks:
-      - guardian
-    ports:
-      - "80:80"
     volumes:
       - type: bind
         source: /data/guardian/motion
@@ -46,6 +43,10 @@ services:
         source: /etc/localtime
         target: /etc/localtime
         read_only: true
+    networks:
+      - guardian
+    ports:
+      - "80:80"
   rtsp:
     container_name: guardian-rtsp
     image: aler9/rtsp-simple-server
@@ -55,15 +56,52 @@ services:
       RTSP_RTSPADDRESS: "0.0.0.0:554"
       RTSP_RTMPDISABLE: "yes"
       RTSP_HLSDISABLE: "yes"
-    networks:
-      - guardian
-    ports:
-      - "554:554"
     volumes:
       - type: bind
         source: /etc/localtime
         target: /etc/localtime
         read_only: true
+    networks:
+      - guardian
+    ports:
+      - "554:554"
+  redis:
+    container_name: guardian-redis
+    image: redis
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    networks:
+      - guardian
+  video-stream-backend:
+    container_name: guardian-video-stream-backend
+    build:
+      context: video_stream_backend
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    networks:
+      - guardian
+  audio-stream-backend:
+    container_name: guardian-audio-stream-backend
+    build:
+      context: audio_stream_backend
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    networks:
+      - guardian
 
 networks:
   guardian:
